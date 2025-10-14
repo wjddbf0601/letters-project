@@ -1,18 +1,129 @@
 <!DOCTYPE html>
 <html>
-	<head>
+  	<head>
 		<meta charset="utf-8">
-		<title>Letters</title>
+    	<title>Piano Intro</title>
+
+    	<style>
+    		body {
+        		background-color: black;
+        		color: white;
+        		font-family: "Arial", sans-serif;
+        		display: flex;
+        		flex-direction: column;
+        		align-items: center;
+        		justify-content: center;
+        		height: 100vh;
+    		}
+    		h1 {
+        		font-size: 2em;
+        		margin-bottom: 20px;
+    		}
+    		#keyboard {
+        	display: flex;
+        	gap: 10px;
+    		}
+    		.key {
+        		width: 60px;
+        		height: 180px;
+        		background: linear-gradient(180deg, #fafafa, #ddd);
+        		border-radius: 8px;
+        		box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+        		text-align: center;
+        		line-height: 180px;
+        		font-weight: bold;
+        		color: #333;
+        		transition: all 0.1s ease;
+    		}
+    		.key.active {
+        		background: #7dd3fc;
+        		box-shadow: 0 0 20px #38bdf8;
+        		transform: scale(1.05);
+    		}
+    		#note-display {
+        		margin-top: 40px;
+        		font-size: 1.6em;
+        		height: 30px;
+        		color: #7dd3fc;
+    		}
+    		.hint {
+        		margin-top: 60px;
+        		font-size: 0.9em;
+        		color: #aaa;
+        		opacity: 0.8;
+    		}
+      		.fade-out {
+        		animation: fadeOut 1s forwards;
+    		}
+      		@keyframes fadeOut {
+        		to {
+          		opacity: 0;
+          		transform: scale(1.05);
+        		}
+    		}
+    	</style>
 	</head>
+
 	<body>
-		<h1>Letters: Roon</h1>
-		<p>We write text from left to right. Change I'm making! Even more text!</p>
-		<div id="output"></div>
-		<script>
-			// Listen for keydown events
-			document.addEventListener("keydown", function(event) {
-    		console.log("Key pressed:", event.key);
-  			});
-		</script>
+    	<h1>Press Keys</h1>
+
+    	<div id="keyboard">
+    		<div class="key" data-key="A" data-note="C">A</div>
+    		<div class="key" data-key="S" data-note="D">S</div>
+  			<div class="key" data-key="D" data-note="E">D</div>
+    		<div class="key" data-key="F" data-note="F">F</div>
+    		<div class="key" data-key="G" data-note="G">G</div>
+    		<div class="key" data-key="H" data-note="A">H</div>
+    		<div class="key" data-key="J" data-note="B">J</div>
+    	</div>
+
+    	<div id="note-display"></div>
+
+    	<script>
+    		const keyMap={
+        	A: "C",
+        	S: "D",
+        	D: "E",
+        	F: "F",
+        	G: "G",
+        	H: "A",
+        	J: "B",
+      		};
+      		const keySound={
+        	A: "C4.mp3",
+        	S: "D4.mp3",
+        	D: "E4.mp3",
+        	F: "F4.mp3",
+        	G: "G4.mp3",
+        	H: "A4.mp3",
+        	J: "B4.mp3",
+      		};
+
+    		document.addEventListener("keydown", (e) => {
+        		const note=keyMap[e.key.toUpperCase()];
+        		const soundFile=keySound[e.key.toUpperCase()];
+        		if (note && soundFile) {
+        			const keyEl=[...document.querySelectorAll(".key")].find(
+            			(k) => k.textContent===e.key.toUpperCase()
+          			);
+        			if (keyEl && !keyEl.classList.contains("active")) {
+            			keyEl.classList.add("active");
+            			document.getElementById("note-display").textContent=`${note}`;
+
+            			const audio=new Audio(`sounds/${soundFile}.mp3`);
+            			audio.currentTime=0;
+            			audio.play();
+        			}
+        		}
+      		});
+
+    		document.addEventListener("keyup", (e) => {
+        		const keyEl=[...document.querySelectorAll(".key")].find(
+        			(k) => k.textContent===e.key.toUpperCase()
+        		);
+
+        		if (keyEl) keyEl.classList.remove("active");
+    		});
+    	</script>
 	</body>
 </html>
