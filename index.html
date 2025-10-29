@@ -30,7 +30,7 @@
 			background: linear-gradient(180deg, #fafafa, #ddd);
 			border: 1px solid #999;
 			border-radius: 6px;
-			box-shadow: 0 4px 10px rgba(255,255,255,0.1);
+			box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
 			z-index: 1;
 			transition: transform 0.1s ease, box-shadow 0.1s ease;
 		}
@@ -89,7 +89,7 @@
 			}
 			50% {
 				transform: scale(1.5) rotate(180deg);
-				opacity: 1; /* 최대 밝기 100% */
+				opacity: 1;
 			}
 			100% {
 				transform: scale(0.5) rotate(360deg);
@@ -126,8 +126,8 @@
 			audio.play();
 		}
 
-		const whiteNotes=["C","D","E","F","G","A","B"];
-		const blackNotes=["C#","D#","","F#","G#","A#",""];
+		const whiteNotes=["C", "D", "E", "F", "G", "A", "B"];
+		const blackNotes=["C#", "D#", "", "F#", "G#", "A#", ""];
 		const keyMap={
 			A:"C",
 			W:"C#",
@@ -147,20 +147,20 @@
 		const keyboard=document.getElementById("keyboard");
 		let position=0;
 		let blank=0;
-		const targetSequence4=["C4","C4","G4","G4","A4","A4","G4"]; // 4옥타브 시퀀스
-		const targetSequence3=["C3","C3","G3","G3","A3","A3","G3"]; // 3옥타브 시퀀스
-		let inputSequence=[];
+		const twinkleStar4=["C4", "C4", "G4", "G4", "A4", "A4", "G4"];
+		const twinkleStar3=["C3", "C3", "G3", "G3", "A3", "A3", "G3"];
+		let inputMelody=[];
 		const starContainer=document.getElementById('star-effect-container');
 
 		for (let octave=3;octave<=5;octave++) {
 			for (let i=0;i<whiteNotes.length;i++) {
 				const whiteKey=document.createElement("div");
-				whiteKey.classList.add("key","white");
+				whiteKey.classList.add("key", "white");
 				whiteKey.dataset.note=`${whiteNotes[i]}${octave}`;
 				keyboard.appendChild(whiteKey);
 				if (blackNotes[i]!=="") {
 					const blackKey=document.createElement("div");
-					blackKey.classList.add("key","black");
+					blackKey.classList.add("key", "black");
 					blackKey.dataset.note=`${blackNotes[i]}${octave}`;
 					blackKey.style.left=`${position*49+blank+129}px`;
 					keyboard.appendChild(blackKey);
@@ -172,7 +172,6 @@
 
 		function createStars(effectClass, duration) {
 			starContainer.innerHTML='';
-
 			const numStars=Math.floor(Math.random()*6)+5; 
 
 			for (let i=0;i<numStars;i++) {
@@ -193,30 +192,29 @@
 				starContainer.appendChild(star);
 				setTimeout(()=>{
 					star.remove();
-				}, duration*1000 + 500); 
+				}, duration*1000+500); 
 			}
 		}
 
-		function checkSequence(note) {
-			inputSequence.push(note);
-			if (inputSequence.length>targetSequence4.length) {
-				inputSequence.shift();
+		function checkMelody(note) {
+			inputMelody.push(note);
+			if (inputMelody.length>twinkleStar4.length) {
+				inputMelody.shift();
 			}
-			const currentInputString=inputSequence.join(',');
-			if (currentInputString===targetSequence4.join(',')) {
+			const currentInputString=inputMelody.join(',');
+			if (currentInputString===twinkleStar4.join(',')) {
 				createStars('star-glow', 2);
-				inputSequence=[]; 
+				inputMelody=[]; 
 			}
-			else if (currentInputString===targetSequence3.join(',')) {
+			else if (currentInputString===twinkleStar3.join(',')) {
 				createStars('star-dim', 4); 
-				inputSequence=[];
+				inputMelody=[];
 			}
 		}
 		
 		document.addEventListener("keydown",(e)=>{
 			const key=e.key.toUpperCase();
 			if (e.repeat) return;
-			
 			if (["3","4","5"].includes(key)) {
 				currentOctave=parseInt(key);
 				document.getElementById("octave-display").textContent=`Current Octave: ${currentOctave}`;
@@ -225,7 +223,6 @@
 			
 			const baseNote=keyMap[key];
 			if (!baseNote) return;
-			
 			const note=`${baseNote}${currentOctave}`;
 			const keyEl=[...document.querySelectorAll(".key")].find(k=>k.dataset.note===note);
 			
@@ -234,8 +231,7 @@
 					keyEl.classList.add("active");
 					document.getElementById("note-display").textContent=note;
 					playSound(`sounds/${note}.mp3`);
-					
-					checkSequence(note); 
+					checkMelody(note); 
 				}
 			}
 		});
