@@ -185,9 +185,8 @@
 	</div>
 
 	<script>
-		function playSound(note){
-			const noteFileName=note.replace("#","s"); 
-			const audio=new Audio(`https://s3-us-west-2.amazonaws.com/s.cdpn.io/104112/${noteFileName}.mp3`);
+		function playSound(note){ 
+			const audio=new Audio(`https://raw.githubusercontent.com/fuhton/piano-mp3/master/mp3/${note}.mp3`);
 			audio.currentTime=0;
 			audio.play();
 		}
