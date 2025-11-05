@@ -186,7 +186,8 @@
 
 	<script>
 		function playSound(note){
-			const audio=new Audio(`https://wjddbf0601.github.io/letters-project/piano-mp3/${note}.mp3`);
+			const noteFileName=note.replace("#","s"); 
+			const audio=new Audio(`https://s3-us-west-2.amazonaws.com/s.cdpn.io/104112/${noteFileName}.mp3`);
 			audio.currentTime=0;
 			audio.play();
 		}
