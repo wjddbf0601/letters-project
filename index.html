@@ -167,37 +167,6 @@
 			80% {opacity: 1;}
 			100% {left: 100%; opacity: 0;}
 		}
-		.mario-jump-effect {
-			position: absolute;
-			bottom: -150px;
-			opacity: 0;
-			width: 100px;
-			height: auto;
-			z-index: 999;
-			animation: marioJump 1.5s ease-out forwards;
-		}
-		@keyframes marioJump {
-			0% {
-				bottom: -150px;
-				opacity: 0;
-				transform: scale(1);
-			}
-			30% {
-				bottom: 50px;
-				opacity: 1;
-				transform: scale(1.1);
-			}
-			70% {
-				bottom: 50px;
-				opacity: 1;
-				transform: scale(1.1);
-			}
-			100% {
-				bottom: -150px;
-				opacity: 0;
-				transform: scale(1);
-			}
-		}
 	</style>
 </head>
 <body>
@@ -213,7 +182,6 @@
 		When changing to the 3rd or 5th octave, the keys function as indicated on the keyboard.<br><br>
 		- Twinkle Twinkle Little Star: C C G G A A G<br>
 		- River Flows on You: A G# A G# A E A D<br>
-		- Super Mario: E4 E4 E4 C4 E4 G4 G3
 	</div>
 
 	<script>
@@ -235,7 +203,6 @@
 		let blank=0;
 		const twinkleStar4=["C4","C4","G4","G4","A4","A4","G4"];
 		const twinkleStar3=["C3","C3","G3","G3","A3","A3","G3"];
-		const marioMelody=["E4","E4","E4","C4","E4","G4","G3"];
 		let inputMelody=[];
 		const starContainer=document.getElementById('star-effect-container');
 
@@ -294,23 +261,6 @@
 			inputMelody.push(note);
 			if(inputMelody.length>8) inputMelody.shift();
 			const currentInputString=inputMelody.join(',');
-
-			if(currentInputString===marioMelody.join(',')){
-				const marioImage=document.createElement('img');
-				marioImage.src='https://wjddbf0601.github.io/letters-project/mario_jumpreal';
-				marioImage.classList.add('mario-jump-effect');
-				
-				const randomX=Math.random()*(window.innerWidth - 100); 
-				marioImage.style.left=`${randomX}px`;
-				document.body.appendChild(marioImage);
-
-				setTimeout(()=>{
-					marioImage.remove();
-				},1500); 
-				inputMelody=[];
-			}
-			// --------------------------------------------------------
-
 			if(currentInputString===twinkleStar4.join(',')){
 				createStars('star-glow',2);
 				inputMelody=[];
@@ -400,3 +350,4 @@
 	</script>
 </body>
 </html>
+
